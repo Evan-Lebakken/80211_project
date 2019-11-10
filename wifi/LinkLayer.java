@@ -1,6 +1,6 @@
 package wifi;
 import java.io.PrintWriter;
-
+import java.util.*;
 import rf.RF;
 
 /**
@@ -46,7 +46,7 @@ public class LinkLayer implements Dot11Interface
         Receiver listener = new Receiver();
         (new Thread(listener)).start();
         (new Thread(transmitter)).start();
-        while(true); 
+        while(true);
         //System.exit(0);  // Make sure all threads die
     }
 
@@ -56,8 +56,11 @@ public class LinkLayer implements Dot11Interface
      */
     public int send(short dest, byte[] data, int len) {
         output.println("LinkLayer: Sending "+len+" bytes to "+dest);
-
-        theRF.transmit(data);
+        List<Byte> list = Collections.synchronizedList(new ArrayList<Byte>());
+        for(int i = 0; i < len; i++){
+            list.add(data[i]);
+        }
+        //how to hand this to the sender class?
         return len;
     }
 
