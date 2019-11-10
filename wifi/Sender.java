@@ -22,7 +22,11 @@ public class Sender implements Runnable{
                 Packet newPacket = queue.take();
                 if(newPacket != null){
                     System.out.println("thinks that new packet is not null");
-                    ourRF.transmit(newPacket.getData());
+                    try{
+                        ourRF.transmit(newPacket.getData());
+                    }catch (NullPointerException e){
+                        e.printStackTrace();
+                    }
                 }
             } catch (InterruptedException ex) {
                 ex.printStackTrace();

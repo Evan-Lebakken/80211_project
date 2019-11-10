@@ -1,5 +1,15 @@
 #BlueJ class context
 comment0.target=Packet
-comment1.params=byteArr
-comment1.target=Packet(byte[])
-numComments=2
+comment1.params=transmission
+comment1.target=Packet(Transmission)
+comment2.params=byteArray
+comment2.target=Packet(byte[])
+comment3.params=
+comment3.target=byte[]\ getData()
+comment4.params=
+comment4.target=byte[]\ getControlField()
+comment5.params=
+comment5.target=java.lang.String\ getFrameType()
+comment6.params=bytes
+comment6.target=java.lang.String\ byteToString(byte[])
+numComments=7

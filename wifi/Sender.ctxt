@@ -2,6 +2,8 @@
 comment0.target=Sender
 comment1.params=theQueue\ theRF
 comment1.target=Sender(java.util.concurrent.BlockingQueue,\ rf.RF)
-comment2.params=
-comment2.target=void\ run()
-numComments=3
+comment2.params=newRF
+comment2.target=void\ setRF(rf.RF)
+comment3.params=
+comment3.target=void\ run()
+numComments=4

@@ -32,7 +32,7 @@ public class Packet{
             setters and getters for all fields
             
     */
-    private byte[] myBytes;
+    public byte[] myBytes;
     private final int controlFieldIndex = 2;
     private final int frameTypeIndex = 3;       //bit indexes
     private final int retryIndex = 4;
@@ -44,18 +44,18 @@ public class Packet{
     public boolean isRetry;
     public String controlField;
 
-    public Packet(Transmittion transmittion){
+    public Packet(Transmission transmission){
         //set myBytes equal to transmittion.getBuf()
         //check dest and src address, change if not matching?
-        this.myBytes = transmittion.getBuf();
+        this.myBytes = transmission.getBuf();
     }
 
     public Packet(byte[] byteArray){
-        this.myBytes = byteArray;
+        myBytes = byteArray;
     }
 
     public byte[] getData(){
-        return this.myBytes;
+        return myBytes;
     }
 
     public byte[] getControlField(){
@@ -72,12 +72,10 @@ public class Packet{
         return frameString;
     }
 
-    public 
-=
     public String byteToString(byte[] bytes) {
         char[] bits = new char[8 * bytes.length];
         for(int i = 0; i < bytes.length; i++){
-            byte byteval = b[i];
+            byte byteval = bytes[i];
             int bytei = i << 3;
             int mask = 0x1;
             for(int j = 7; j >= 0; j--){

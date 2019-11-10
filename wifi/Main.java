@@ -21,7 +21,7 @@ public class Main
         // info on parameters, but they're null here since we don't need
         // to override any of its default settings.
         byte[] arr = new byte[6];
-        Arrays.fill(arr, (byte) 1);
+        Arrays.fill(arr, (byte) 10);
         
         RF theRF = new RF(null,null);
         LinkLayer currentLayer;

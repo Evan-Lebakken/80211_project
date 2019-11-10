@@ -43,6 +43,7 @@ public class JavaGUIAdapter implements GUIClientInterface
 		try {
 			cbb = new CircularByteBuffer(CircularByteBuffer.INFINITE_SIZE);
 			reader = new BufferedReader(new InputStreamReader(cbb.getInputStream()));
+			//theDot11Layer = new Main().getLinkLayer();
 			theDot11Layer = new LinkLayer(MACaddr, new PrintWriter(cbb.getOutputStream(), true));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
