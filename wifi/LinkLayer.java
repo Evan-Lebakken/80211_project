@@ -2,6 +2,7 @@ package wifi;
 import java.io.PrintWriter;
 import java.util.*;
 import rf.RF;
+import java.util.concurrent.*;
 
 /**
  * Use this layer as a starting point for your project code.  See {@link Dot11Interface} for more
@@ -13,7 +14,7 @@ public class LinkLayer implements Dot11Interface
     private RF theRF;           // You'll need one of these eventually
     private short ourMAC;       // Our MAC address
     private PrintWriter output; // The output stream we'll write to
-
+    public static SynchronousQueue<Packet> queue;
     /**
      * Constructor takes a MAC address and the PrintWriter to which our output will
      * be written.
@@ -33,17 +34,8 @@ public class LinkLayer implements Dot11Interface
         // info on parameters, but they're null here since we don't need
         // to override any of its default settings.
         Sender transmitter = new Sender();
-        transmitter.addToQueue(1);
-        transmitter.addToQueue(2);
-        transmitter.addToQueue(10);
-        transmitter.addToQueue(3);
-        transmitter.addToQueue(4);
-        transmitter.addToQueue(5);
-        transmitter.addToQueue(9);
-        transmitter.addToQueue(6);
-        transmitter.addToQueue(7);
-        transmitter.addToQueue(8);
         Receiver listener = new Receiver();
+        queue = new SynchronousQueue<Packet>();
         (new Thread(listener)).start();
         (new Thread(transmitter)).start();
         while(true);
@@ -56,11 +48,15 @@ public class LinkLayer implements Dot11Interface
      */
     public int send(short dest, byte[] data, int len) {
         output.println("LinkLayer: Sending "+len+" bytes to "+dest);
-        List<Byte> list = Collections.synchronizedList(new ArrayList<Byte>());
-        for(int i = 0; i < len; i++){
-            list.add(data[i]);
+        //do checksum math here and build packets
+        //then add packets to synchronous queue to pass to sender
+        Packet newPacket = new Packet(data);
+        try {
+            queue.put(newPacket);
+        } catch (InterruptedException ex) {
+            ex.printStackTrace();
         }
-        //how to hand this to the sender class?
+        
         return len;
     }
 

@@ -3,11 +3,18 @@ import java.util.*;
 
 public class Sender implements Runnable{
     //TODO List<Packet>
-    List<Integer> queue = new ArrayList<Integer>();
+    public Sender()
+    
+    //List<Packet> queue = new ArrayList<Packet>();
     public void run()
     {
         while(queue.size() > 0){
-            System.out.println("Current Int: " + queue.get(0));
+            System.out.println("Current Packcet: " + queue.get(0));
+            try {
+                Integer consumedElement = queue.take();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
             try 
             {
                 Thread.sleep(3000);
@@ -18,10 +25,5 @@ public class Sender implements Runnable{
             }
             queue.remove(0);
         }
-    }
-    
-    //use this to add to the outgoing packet queue which lives in the sender
-    public void addToQueue(Integer newInt){
-        queue.add(newInt);
     }
 }
