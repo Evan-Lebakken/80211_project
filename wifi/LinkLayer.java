@@ -38,6 +38,7 @@ public class LinkLayer implements Dot11Interface
         //do checksum math here and build packets
         //then add packets to synchronous queue to pass to sender
         Packet newPacket = new Packet(data);
+        System.out.println(newPacket.getData());
         try {
             queue.put(newPacket);
         } catch (InterruptedException ex) {

@@ -9,11 +9,9 @@ public class Sender implements Runnable{
     //TODO List<Packet>
     public Sender(BlockingQueue<Packet> theQueue, RF theRF){
         this.queue = theQueue;
+        this.ourRF = theRF;
     }
     
-    public void setRF(RF newRF){
-        this.ourRF = newRF;
-    }
     //List<Packet> queue = new ArrayList<Packet>();
     public void run()
     {   

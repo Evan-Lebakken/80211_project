@@ -20,8 +20,8 @@ public class Main
         // Create an instance of the RF layer. See documentation for
         // info on parameters, but they're null here since we don't need
         // to override any of its default settings.
-        byte[] arr = new byte[6];
-        Arrays.fill(arr, (byte) 10);
+        byte[] arr = new byte[2048];
+        Arrays.fill(arr, (byte) 1);
         
         RF theRF = new RF(null,null);
         LinkLayer currentLayer;
@@ -39,7 +39,7 @@ public class Main
             (new Thread(listener)).start();
             (new Thread(transmitter)).start();
             while(true){
-               currentLayer.send((short)  123456, arr, 6);
+               currentLayer.send((short)  123456, arr, 2048);
                try 
                {
                    Thread.sleep(1000);
