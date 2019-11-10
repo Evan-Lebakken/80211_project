@@ -3,7 +3,7 @@ import java.io.PrintWriter;
 import java.util.*;
 import rf.RF;
 import java.util.concurrent.*;
-
+import java.util.Arrays;
 /**
  * Use this layer as a starting point for your project code.  See {@link Dot11Interface} for more
  * details on these routines.
@@ -14,7 +14,8 @@ public class LinkLayer implements Dot11Interface
     private RF theRF;           // You'll need one of these eventually
     private short ourMAC;       // Our MAC address
     private PrintWriter output; // The output stream we'll write to
-    public static SynchronousQueue<Packet> queue;
+    public static BlockingQueue<Packet> queue;
+    
     /**
      * Constructor takes a MAC address and the PrintWriter to which our output will
      * be written.
@@ -33,15 +34,38 @@ public class LinkLayer implements Dot11Interface
         // Create an instance of the RF layer. See documentation for
         // info on parameters, but they're null here since we don't need
         // to override any of its default settings.
-        Sender transmitter = new Sender();
-        Receiver listener = new Receiver();
+        byte[] arr = new byte[6];
+        Arrays.fill(arr, (byte) 1);
+        
+        List<Packet> outgoingQueue = new ArrayList<Packet>();
+        //FIFO
+        outgoingQueue.add(new Packet(arr));
+        outgoingQueue.add(new Packet(arr));
+        outgoingQueue.add(new Packet(arr));
+        outgoingQueue.add(new Packet(arr));
         queue = new SynchronousQueue<Packet>();
+        Sender transmitter = new Sender(queue, theRF);
+        Receiver listener = new Receiver();
+        System.out.println("finished initializing");
+        
         (new Thread(listener)).start();
         (new Thread(transmitter)).start();
-        while(true);
+        while(true){
+            if(outgoingQueue.size() > 0){
+                try {
+                    System.out.println("about to submit packet to queue");
+                    System.out.println("thispacket: " + outgoingQueue.get(0));
+                    queue.put(outgoingQueue.get(0));
+                    outgoingQueue.remove(0);
+                    System.out.println("Submitted packet");
+                } catch (InterruptedException ex) {
+                    ex.printStackTrace();
+                }
+            }  
+        }
         //System.exit(0);  // Make sure all threads die
     }
-
+    
     /**
      * Send method takes a destination, a buffer (array) of data, and the number
      * of bytes to send.  See docs for full description.
@@ -56,7 +80,6 @@ public class LinkLayer implements Dot11Interface
         } catch (InterruptedException ex) {
             ex.printStackTrace();
         }
-        
         return len;
     }
 

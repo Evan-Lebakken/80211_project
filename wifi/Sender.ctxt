@@ -1,7 +1,7 @@
 #BlueJ class context
 comment0.target=Sender
-comment1.params=
-comment1.target=void\ run()
-comment2.params=newInt
-comment2.target=void\ addToQueue(java.lang.Integer)
+comment1.params=theQueue\ theRF
+comment1.target=Sender(java.util.concurrent.BlockingQueue,\ rf.RF)
+comment2.params=
+comment2.target=void\ run()
 numComments=3
