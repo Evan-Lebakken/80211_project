@@ -2,4 +2,6 @@
 comment0.target=Sender
 comment1.params=
 comment1.target=void\ run()
-numComments=2
+comment2.params=newInt
+comment2.target=void\ addToQueue(java.lang.Integer)
+numComments=3

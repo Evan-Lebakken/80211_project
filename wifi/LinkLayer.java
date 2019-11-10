@@ -32,13 +32,21 @@ public class LinkLayer implements Dot11Interface
         // Create an instance of the RF layer. See documentation for
         // info on parameters, but they're null here since we don't need
         // to override any of its default settings.
-        
         Sender transmitter = new Sender();
+        transmitter.addToQueue(1);
+        transmitter.addToQueue(2);
+        transmitter.addToQueue(10);
+        transmitter.addToQueue(3);
+        transmitter.addToQueue(4);
+        transmitter.addToQueue(5);
+        transmitter.addToQueue(9);
+        transmitter.addToQueue(6);
+        transmitter.addToQueue(7);
+        transmitter.addToQueue(8);
         Receiver listener = new Receiver();
         (new Thread(listener)).start();
         (new Thread(transmitter)).start();
-        while(true);
-            
+        while(true); 
         //System.exit(0);  // Make sure all threads die
     }
 
