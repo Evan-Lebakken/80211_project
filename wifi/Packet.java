@@ -6,19 +6,20 @@ public class Packet{
         Packet Class 
         
         Fields
-            Control field : 2 bits
-                Frame type: 3 bytes
-                Retry: 1 byte
+            Control field : 2 bytes
+                Frame type: 3 bits
+                Retry: 1 bit
                 Sequence Num: 12 bits
-            Destination address : 2 bits
-            Source Address : 2 bits
-            Data : 2038 bits lmao
-            CRC : 4 bits
+            Destination address : 2 bytes
+            Source Address : 2 bytes
+            Data : 2038 bytes lmao
+            CRC : 4 bytes
             ByteArray : 2048 array of all bytes
 
         Constructor
             Packet(Byte[] control, Byte[] dest, Byte[] )
                 Parses 2048 bit array into object fields
+            
             
         Methods
             toString()
@@ -27,8 +28,24 @@ public class Packet{
             
     */
     private byte[] myBytes;
-    public Packet(byte[] byteArr){
-        this.myBytes = byteArr;
+    private final int controlFieldIndex = 2;
+    private final int frameTypeIndex = 3;       //bit indexes
+    private final int retryIndex = 4;
+    private final int sequenceNumIndex = 16;    //end bit indexes
+    private final int destinationAddressIndex = 4;
+    private final int sourceAddress = 6;
+    private final int dataIndex = 2044;
+    private final int crcIndex = 2048;
+
+    public Packet(Transmittion transmittion){
+        //set myBytes equal to transmittion.getBuf()
+        //check dest and src address, change if not matching?
+        this.myBytes = transmittion.getBuf();
     }
+
+    public Packet(byte[] byteArray){
+        this.myBytes = byteArray;
+    }
+
 }
     
