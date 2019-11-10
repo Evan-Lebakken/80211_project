@@ -36,6 +36,8 @@ public class Packet{
     private final int sourceAddress = 6;
     private final int dataIndex = 2044;
     private final int crcIndex = 2048;
+    public boolean isRetry;
+    public String controlField;
 
     public Packet(Transmittion transmittion){
         //set myBytes equal to transmittion.getBuf()
@@ -47,5 +49,43 @@ public class Packet{
         this.myBytes = byteArray;
     }
 
+    public byte[] getData(){
+        return this.myBytes;
+    }
+
+    public byte[] getControlField(){
+        byte[] controlField = new byte[controlFieldIndex];
+        for(int i = 0; i < controlFieldIndex; i++){
+            controlField[i] = myBytes[i];
+        }
+        return controlField;
+    }
+
+    public String getFrameType(){
+        byte[] frameType = {getControlField()[0]};
+        String frameString = byteToString(frameType).substring(0,frameTypeIndex);
+        return frameString;
+    }
+
+    public 
+=
+    public String byteToString(byte[] bytes) {
+        char[] bits = new char[8 * bytes.length];
+        for(int i = 0; i < bytes.length; i++){
+            byte byteval = b[i];
+            int bytei = i << 3;
+            int mask = 0x1;
+            for(int j = 7; j >= 0; j--){
+                int bitval = byteval & mask;
+                if(bitval == 0) {
+                    bits[bytei + j] = '0';
+                } else {
+                    bits[bytei + j] = '1';
+                }
+                mask <<= 1;
+            }
+        }
+        return String.valueOf(bits);
+    }
 }
     
