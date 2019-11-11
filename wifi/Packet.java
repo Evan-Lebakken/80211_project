@@ -90,5 +90,15 @@ public class Packet{
         }
         return String.valueOf(bits);
     }
+
+    public static void main(String[] args){
+        byte[] arr = new byte[2048];
+        Packet packet = new Packet(arr);
+        
+        for(int i = 0; i < 2048; i++){
+            System.out.print(packet.getData()[i]);
+        }
+        System.out.println(arr.length);
+    }
 }
     
