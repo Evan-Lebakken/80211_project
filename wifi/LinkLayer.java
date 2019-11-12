@@ -17,7 +17,7 @@ public class LinkLayer implements Dot11Interface
     public static BlockingQueue<Packet> queue;
     
     /**
-     * Constructor takes a MAC address and the PrintWriter to which our output will
+     * Constructor takex    s a MAC address and the PrintWriter to which our output will
      * be written.
      * @param ourMAC  MAC address
      * @param output  Output stream associated with GUI

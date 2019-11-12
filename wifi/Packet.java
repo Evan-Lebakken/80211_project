@@ -21,11 +21,7 @@ public class Packet{
             CRC : 4 bytes
             ByteArray : 2048 array of all bytes
 
-        Constructor
-            Packet(Byte[] control, Byte[] dest, Byte[] )
-                Parses 2048 bit array into object fields
-            
-            
+        
         Methods
             toString()
                 returns ByteArray to send on rf layer
@@ -34,13 +30,13 @@ public class Packet{
     */
     public byte[] myBytes;
     private final int controlFieldIndex = 2;
-    private final int frameTypeIndex = 3;       //bit indexes
-    private final int retryIndex = 4;
-    private final int sequenceNumIndex = 16;    //end bit indexes
-    private final int destinationAddressIndex = 4;
-    private final int sourceAddress = 6;
-    private final int dataIndex = 2044;
-    private final int crcIndex = 2048;
+    private final byte frameTypeByte = 224;
+    private final byte retryByte = 16;
+    private final byte seqNumByte = 15;
+    private final int destIndex = 2;
+    private final int srcIndex = 4;
+    private final int dataIndex = 6;
+    private final int crcIndex = 2044;
     public boolean isRetry;
     public String controlField;
 
@@ -54,8 +50,8 @@ public class Packet{
         myBytes = byteArray;
     }
 
-    public byte[] getData(){
-        return myBytes;
+    public Packet(byte[] data, byte[] src, byte[] dest){
+        
     }
 
     public byte[] getControlField(){
@@ -66,29 +62,49 @@ public class Packet{
         return controlField;
     }
 
-    public String getFrameType(){
-        byte[] frameType = {getControlField()[0]};
-        String frameString = byteToString(frameType).substring(0,frameTypeIndex);
-        return frameString;
+    public byte getFrameType(){
+        byte frameType = {getControlField()[0]};
+        //frame data is controlField & 11100000
+        frameType = frameTypeByte & frameType;
+        return frameType;
     }
 
-    public String byteToString(byte[] bytes) {
-        char[] bits = new char[8 * bytes.length];
-        for(int i = 0; i < bytes.length; i++){
-            byte byteval = bytes[i];
-            int bytei = i << 3;
-            int mask = 0x1;
-            for(int j = 7; j >= 0; j--){
-                int bitval = byteval & mask;
-                if(bitval == 0) {
-                    bits[bytei + j] = '0';
-                } else {
-                    bits[bytei + j] = '1';
-                }
-                mask <<= 1;
-            }
+    public byte getRetry(){
+        byte retry = getControlField()[0];
+        retry = retry & retryByte;
+        if(retry == 0){
+            return retry;
         }
-        return String.valueOf(bits);
+        return 1;
+    }
+
+    public byte[] getSeqNum(){
+        byte [] controlField = getControlField();
+        return new byte[]{seqNumByte & controlField[0], controlField[1]};
+    }
+
+    public byte[] getDest(){
+        return new byte[]{myBytes[destIndex], myBytes[destIndex+1]};
+    }
+
+    public byte[] getSrc(){
+        return new byte[]{myBytes[srcIndex], myBytes[srcIndex+1]};
+    }
+
+    public byte[] getData(){
+        byte[] data = new byte[2038];
+        for(int i = 0; i < data.length; i++){
+            data[i] = myBytes[dataIndex+i];
+        }
+        return data;
+    }
+
+    public byte[] getCRC(){
+        byte[] crc = new byte[4];
+        for(int i = 0; i < crc.length; i++){
+            crc[i] = myBytes[crcIndex+i];
+        }
+        return crc;
     }
 
     public static void main(String[] args){
