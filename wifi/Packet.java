@@ -1,10 +1,5 @@
 package wifi;
-import java.lang.reflect.*;
-import java.io.PrintWriter;
-import java.util.*;
-import rf.RF;
-import java.util.concurrent.*;
-import java.util.Arrays;
+//import java.lang;
 
 public class Packet{
     /*
@@ -30,21 +25,15 @@ public class Packet{
     */
     public byte[] myBytes;
     private final int controlFieldIndex = 2;
-    private final byte frameTypeByte = 224;
-    private final byte retryByte = 16;
-    private final byte seqNumByte = 15;
+    //private final Byte frameTypeByte = new Byte(224);
+    //private final byte retryByte = (byte)16;
+    //private final byte seqNumByte = (byte)15;
     private final int destIndex = 2;
     private final int srcIndex = 4;
     private final int dataIndex = 6;
     private final int crcIndex = 2044;
     public boolean isRetry;
     public String controlField;
-
-    public Packet(Transmission transmission){
-        //set myBytes equal to transmittion.getBuf()
-        //check dest and src address, change if not matching?
-        this.myBytes = transmission.getBuf();
-    }
 
     public Packet(byte[] byteArray){
         myBytes = byteArray;
@@ -53,7 +42,7 @@ public class Packet{
     public Packet(byte[] data, byte[] src, byte[] dest){
         
     }
-
+    /*
     public byte[] getControlField(){
         byte[] controlField = new byte[controlFieldIndex];
         for(int i = 0; i < controlFieldIndex; i++){
@@ -63,7 +52,7 @@ public class Packet{
     }
 
     public byte getFrameType(){
-        byte frameType = {getControlField()[0]};
+        //byte frameType = getControlField()[0];
         //frame data is controlField & 11100000
         frameType = frameTypeByte & frameType;
         return frameType;
@@ -82,13 +71,21 @@ public class Packet{
         byte [] controlField = getControlField();
         return new byte[]{seqNumByte & controlField[0], controlField[1]};
     }
-
+    */
     public byte[] getDest(){
         return new byte[]{myBytes[destIndex], myBytes[destIndex+1]};
     }
 
     public byte[] getSrc(){
         return new byte[]{myBytes[srcIndex], myBytes[srcIndex+1]};
+    }
+    
+    public byte[] getCRC(){
+        byte[] crc = new byte[4];
+        for(int i = 0; i < crc.length; i++){
+            crc[i] = myBytes[crcIndex+i];
+        }
+        return crc;
     }
 
     public byte[] getData(){
@@ -99,22 +96,11 @@ public class Packet{
         return data;
     }
 
-    public byte[] getCRC(){
-        byte[] crc = new byte[4];
-        for(int i = 0; i < crc.length; i++){
-            crc[i] = myBytes[crcIndex+i];
-        }
-        return crc;
-    }
-
+    
     public static void main(String[] args){
         byte[] arr = new byte[2048];
         Packet packet = new Packet(arr);
-        
-        for(int i = 0; i < 2048; i++){
-            System.out.print(packet.getData()[i]);
-        }
-        System.out.println(arr.length);
+        System.out.print(packet.getData()+""+packet.getDest()+" "+packet.getSrc()+" "+packet.getCRC());
     }
 }
     
